@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Trò chơi Đoán số</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 5px;
+    }
+    #result, #attempts, #record {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎲 Trò chơi Đoán số</h1>
+  <p>Hãy đoán một số từ 1 đến 100:</p>
+  <input type="number" id="guess" min="1" max="100">
+  <button onclick="checkGuess()">Đoán</button>
+  <button onclick="resetGame()">Chơi lại 🔁</button>
+
+  <div id="result"></div>
+  <div id="attempts">Số lần đoán: 0</div>
+  <div id="record">Kỷ lục: chưa có</div>
+
+  <script>
+    let secretNumber = Math.floor(Math.random() * 100) + 1;
+    let attempts = 0;
+    let bestRecord = null;
+
+    function checkGuess() {
+      const guess = parseInt(document.getElementById("guess").value);
+      if (isNaN(guess)) return;
+
+      attempts++;
+      document.getElementById("attempts").innerText = `Số lần đoán: ${attempts}`;
+
+      if (guess === secretNumber) {
+        document.getElementById("result").innerText = `🎉 Chính xác! Bạn đã đoán đúng sau ${attempts} lần.`;
+        if (bestRecord === null || attempts < bestRecord) {
+          bestRecord = attempts;
+          document.getElementById("record").innerText = `Kỷ lục: ${bestRecord} lần đoán`;
+        }
+      } else if (guess < secretNumber) {
+        document.getElementById("result").innerText = "🔼 Số bạn đoán nhỏ hơn số bí mật.";
+      } else {
+        document.getElementById("result").innerText = "🔽 Số bạn đoán lớn hơn số bí mật.";
+      }
+    }
+
+    function resetGame() {
+      secretNumber = Math.floor(Math.random() * 100) + 1;
+      attempts = 0;
+      document.getElementById("result").innerText = "";
+      document.getElementById("attempts").innerText = "Số lần đoán: 0";
+      document.getElementById("guess").value = "";
+    }
+  </script>
+</body>
+</html>
